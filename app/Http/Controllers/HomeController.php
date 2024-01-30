@@ -41,7 +41,8 @@ class HomeController extends Controller
     $noplat = $request->input('noplat');
 
     $data = Penyewaan::whereHas('kendaraan', function ($query) use ($noplat) {
-        $query->where('noplat', 'LIKE', "%$noplat%");
+        $query->where('noplat', 'LIKE', "%$noplat%")
+              ->where('status', '=', 'SEWA');
     })->get();
     foreach ($data as $penyewaan) {
         $tanggalSewa = Carbon::parse($penyewaan->tanggalsewa);

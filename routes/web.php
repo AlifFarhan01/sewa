@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/pengembalian', [App\Http\Controllers\HomeController::class, 'pengembalian'])->name('pengembalian');
+Route::put('/pengembalian/update/{id}', [App\Http\Controllers\PenyewaanController::class, 'update'])->name('pengembalian.update');
 Route::get('/pengembalian/search', [App\Http\Controllers\HomeController::class, 'search'])->name('pengembalian.search');
 
 

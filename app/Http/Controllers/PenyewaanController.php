@@ -29,19 +29,37 @@ class PenyewaanController extends Controller
      */
     public function store(Request $request)
     {
+        $iduser = $request->input('iduser');
+        $idkendaraan = $request->input('idkendaraan');
+        $tanggalsewa = $request->input('tanggalsewa');
+        $tanggalkembali = $request->input('tanggalkembali');   
+     
+        $isKendaraanSewa = Penyewaan::where('idkendaraan', $idkendaraan)
+            ->where(function ($query) use ($tanggalsewa, $tanggalkembali) {
+                $query->whereBetween('tanggalsewa', [$tanggalsewa, $tanggalkembali])
+                    ->orWhereBetween('tanggalkembali', [$tanggalsewa, $tanggalkembali])
+                    ->orWhere(function ($query) use ($tanggalsewa, $tanggalkembali) {
+                        $query->where('tanggalsewa', '<=', $tanggalsewa)
+                            ->where('tanggalkembali', '>=', $tanggalkembali);
+                    });
+            })
+            ->exists(); 
+      
+        if ($isKendaraanSewa) {
+            return redirect()->back()->with('error', 'Mobil sedang disewa pada rentang tanggal yang dimasukkan.');
+        }
+         
         Penyewaan::create([
-            'iduser' => $request->input('iduser'),
-            'idkendaraan' => $request->input('idkendaraan'),
-            'tanggalsewa' => $request->input('tanggalsewa'),
-            'tanggalkembali' => $request->input('tanggalkembali'),
-
-
-            // Tambahkan kolom lain jika diperlukan
+            'iduser' => $iduser,
+            'idkendaraan' => $idkendaraan,
+            'tanggalsewa' => $tanggalsewa,
+            'tanggalkembali' => $tanggalkembali,
+           
         ]);
-
+    
         return redirect()->route('home')->with('success', 'Data berhasil ditambahkan!');
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -63,7 +81,14 @@ class PenyewaanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Update data dalam database
+        Penyewaan::where('id', $id)->update([
+            'totaltarif' => $request->input('totaltarif'),
+            'status' => $request->input('status'),
+            // Tambahkan kolom lain jika diperlukan
+        ]);
+
+        return redirect()->route('pengembalian')->with('success', 'Berhasil di Kembalikan!');
     }
 
     /**

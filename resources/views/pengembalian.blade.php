@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -30,20 +35,39 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Hasil Pencarian Berdasarkan Nomor Plat Kendaraan</div>
-
-                <div class="card-body">
-                    @if(count($data) > 0)
+                    <div class="row justify-content-center">
+                        @if(count($data) > 0)
                         @foreach($data as $sewa)
-                            <p>Nama Mobil: {{ $sewa->kendaraan->merek }}</p>
-                            <p>tanggal Sewa: {{ $sewa->tanggalsewa }}</p>
-                            <p>tanggal Kembali: {{ $sewa->tanggalkembali }}</p>
-                            <p>Total tarif Sewa: {{ $sewa->total_biaya }}</p>
-
+                        <div class="col-md-4">
+                            <form method="POST" action="{{ route('pengembalian.update', $sewa->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="card-body">                       
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{{ asset('assets/mobil.jpg') }}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                        <h6 class="card-title">Merek Mobil :{{ $sewa->kendaraan->merek }} </h6>
+                                        <h6 class="card-title">Model :{{ $sewa->kendaraan->model }} </h6>
+                                        <h6 class="card-title">No Polisi :{{ $sewa->kendaraan->noplat }} </h6>
+                                        <h6 class="card-title">Tanggal Sewa :{{ $sewa->tanggalsewa }} </h6>
+                                        <h6 class="card-title">Tanggal Kembali :{{ $sewa->tanggalkembali }} </h6>
+                                        <h6 class="card-title">Tarif Sewa/Hari :{{ $sewa->kendaraan->tarif }}</h6>
+                                        <h6 class="card-title">Total Biaya:{{ $sewa->total_biaya }}</h6>
+                                        <input type="text" name="totaltarif" value="{{ $sewa->total_biaya }}"hidden>
+                                        <input type="text" name="status" value="dikembalikan"hidden>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-warning">Kembalikan</button>
+                                        </div>
+                                        </div>
+                                    </div>              
+                                </div>
+                            </form>
+                        </div>
                         @endforeach
-                    @else
+                        @else
                         <p>Tidak ada data ditemukan.</p>
-                    @endif
-                </div>
+                        @endif
+                    </div>      
             </div>
         </div>
     </div>
