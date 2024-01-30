@@ -11,7 +11,7 @@
                     <form action="{{ route('pengembalian.search') }}" method="GET">
                         <div class="form-row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Cari Nomor Plat Mobil yang di sewa" name="noplat">
+                                <input type="text" class="form-control" placeholder="Cari Nomor Plat Mobil yang di sewa" name="noplat" required>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-primary">Cari</button>
@@ -37,7 +37,7 @@
                             <p>Nama Mobil: {{ $sewa->kendaraan->merek }}</p>
                             <p>tanggal Sewa: {{ $sewa->tanggalsewa }}</p>
                             <p>tanggal Kembali: {{ $sewa->tanggalkembali }}</p>
-                            <p>tanggal Kembali: {{ $sewa->tanggalkembali }}</p>
+                            <p>Total tarif Sewa: {{ $sewa->total_biaya }}</p>
 
                         @endforeach
                     @else

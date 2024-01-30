@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
         @foreach ($data as $kendaraan)
-        <div class="col">
+        <div class="col-md-3">
             <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="{{ asset('assets/mobil.jpg') }}" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Merek :{{ $kendaraan->merek }} </h5>
                   <h5 class="card-title">Model :{{ $kendaraan->model }} </h5>
