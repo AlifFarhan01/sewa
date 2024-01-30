@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('idkendaraan');
             $table->date('tanggalsewa');
             $table->date('tanggalkembali');
-            $table->string('totaltarif');
-            $table->string('status');
+            $table->string('totaltarif')->default('0'); 
+        $table->string('status')->default('sewa'); 
             $table->timestamps();
         });
     }
